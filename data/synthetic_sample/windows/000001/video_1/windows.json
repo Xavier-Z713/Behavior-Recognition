@@ -1,0 +1,24 @@
+[
+ {
+  "CID": "000001",
+  "video_id": 1,
+  "window": 1,
+  "n_windows": 2,
+  "start": 0.0,
+  "end": 60.0,
+  "boundary_shift_s": 0.0,
+  "n_frames": 16,
+  "n_words": 19
+ },
+ {
+  "CID": "000001",
+  "video_id": 1,
+  "window": 2,
+  "n_windows": 2,
+  "start": 60.0,
+  "end": 120.0,
+  "boundary_shift_s": 0.0,
+  "n_frames": 16,
+  "n_words": 19
+ }
+]

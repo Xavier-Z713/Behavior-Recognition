@@ -1,0 +1,58 @@
+[
+  {
+    "transcript": "What are you going do about it? Huh? Huh?",
+    "target": {"PA": 1, "DA": 0, "HO": 0, "DY": 0, "WI": 0, "AC": 0, "RA": 0, "SD": 0, "HM": 0, "PD": 0, "OT": 0}
+  },
+  {
+    "transcript": "I always feel like I'm on a leash when I'm coming home from work because if I'm not there within 15 minutes, you're waiting for me at the door ready to bawl me out.",
+    "target": {"PA": 0, "DA": 1, "HO": 0, "DY": 0, "WI": 0, "AC": 0, "RA": 0, "SD": 0, "HM": 0, "PD": 0, "OT": 0}
+  },
+  {
+    "transcript": "I don't give a damn what you think.",
+    "target": {"PA": 0, "DA": 0, "HO": 1, "DY": 0, "WI": 0, "AC": 0, "RA": 0, "SD": 0, "HM": 0, "PD": 0, "OT": 0}
+  },
+  {
+    "transcript": "We can't afford to send the kids to camp because I am too stupid to get a good job.",
+    "target": {"PA": 0, "DA": 0, "HO": 0, "DY": 1, "WI": 0, "AC": 0, "RA": 0, "SD": 0, "HM": 0, "PD": 0, "OT": 0}
+  },
+  {
+    "transcript": "I don't want to discuss it anymore!",
+    "target": {"PA": 0, "DA": 0, "HO": 0, "DY": 0, "WI": 1, "AC": 0, "RA": 0, "SD": 0, "HM": 0, "PD": 0, "OT": 0}
+  },
+  {
+    "transcript": "I like how you have been handling the kids lately.",
+    "target": {"PA": 0, "DA": 0, "HO": 0, "DY": 0, "WI": 0, "AC": 1, "RA": 0, "SD": 0, "HM": 0, "PD": 0, "OT": 0}
+  },
+  {
+    "transcript": "You're short with me because you've had a hard day.",
+    "target": {"PA": 0, "DA": 0, "HO": 0, "DY": 0, "WI": 0, "AC": 0, "RA": 1, "SD": 0, "HM": 0, "PD": 0, "OT": 0}
+  },
+  {
+    "transcript": "I feel very uncomfortable when we are at your parents' house.",
+    "target": {"PA": 0, "DA": 0, "HO": 0, "DY": 0, "WI": 0, "AC": 0, "RA": 0, "SD": 1, "HM": 0, "PD": 0, "OT": 0}
+  },
+  {
+    "transcript": "We were so drunk we didn't know if we were lost or the neighbor repainted his house.",
+    "target": {"PA": 0, "DA": 0, "HO": 0, "DY": 0, "WI": 0, "AC": 0, "RA": 0, "SD": 0, "HM": 1, "PD": 0, "OT": 0}
+  },
+  {
+    "transcript": "I think we should start saving more money.",
+    "target": {"PA": 0, "DA": 0, "HO": 0, "DY": 0, "WI": 0, "AC": 0, "RA": 0, "SD": 0, "HM": 0, "PD": 1, "OT": 0}
+  },
+  {
+    "transcript": "I don't like the painting they have on the wall.",
+    "target": {"PA": 0, "DA": 0, "HO": 0, "DY": 0, "WI": 0, "AC": 0, "RA": 0, "SD": 0, "HM": 0, "PD": 0, "OT": 1}
+  },
+  {
+    "transcript": "Because it's too late for me. What am I going to do, go to college? How can we possibly afford it? We can't afford the tuition. We can't afford me working less. I'm stuck. I have seniority and a chance to get a miserable pension, but at least it's something. It's too late for me to start over at the bottom. I've got mouths to feed. Plus, can you see me in management? I hate those bastards. There's no way that you'll see me become one of them",
+    "target": {"PA": 0, "DA": 0, "HO": 0, "DY": 0, "WI": 0, "AC": 0, "RA": 1, "SD": 0, "HM": 0, "PD": 1, "OT": 0}
+  },
+  {
+    "transcript": "No [Speaker looks down, looking sad and defeated; Listener rolls his eyes]",
+    "target": {"PA": 0, "DA": 0, "HO": 1, "DY": 1, "WI": 0, "AC": 0, "RA": 0, "SD": 0, "HM": 0, "PD": 0, "OT": 0}
+  },
+  {
+    "transcript": "That's what you love. You love more screaming and hollering. When someone has a bad day, you should just leave them alone, [bitterly sarcastic] but, you want to hear more and more. You get me going, like you're doing right now. You're getting me going. [glares] [Listener continues to avert her eyes and look sad]",
+    "target": {"PA": 1, "DA": 0, "HO": 0, "DY": 1, "WI": 0, "AC": 0, "RA": 0, "SD": 0, "HM": 0, "PD": 0, "OT": 0}
+  }
+]
