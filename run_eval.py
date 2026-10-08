@@ -5,7 +5,7 @@ import pandas as pd
 from ccd_config import (PROMPT_CODES, CODES, MANIFEST, WINDOW_DIR, RUNS_DIR, MODEL_REGISTRY, WINDOW_SEC, SNAP_TOL_SEC,
                         NUM_FRAMES, IMAGE_SIZE, MAX_NEW_TOKENS, FEW_SHOT_K, load_few_shot)
 from prompt import build_prompt, prompt_hash
-from runners import get_runner, parse_counts, parse_trace, counts_from_trace
+from runners import get_runner, parse_counts, parse_trace
 import metrics
 
 RETRY_SUFFIX = "\n\nYour previous answer was not a valid JSON object. Return only the JSON object."
@@ -74,7 +74,7 @@ def main():
     if raw_path.exists():
         for line in raw_path.read_text(encoding="utf-8").splitlines():
             if line.strip():
-                r = json.loads(line); done.add((r["CID"], r["video_id"], r["window"])); done_counts[(r["CID"], r["video_id"], r["window"])] = r["counts"]
+                r = json.loads(line); done.add((r["CID"], r["video_id"], r["window"])); done_counts[(r["CID"], r["video_id"], r["window"])] = r.get("counts")
     print(f"run {run_name}: {len(done)} windows already done")
 
     m = pd.read_csv(MANIFEST, dtype={"CID": str})
@@ -103,34 +103,42 @@ def main():
                 prompt = build_prompt(transcript, w["window"], w["n_windows"], w["start"], w["end"], a.few_shot, inputs_note, trace=a.trace)
                 text = runner.generate(prompt, frames, wdir / "clip.mp4", use_audio=a.use_audio)
                 retried = False
+                rec = {"CID": r.CID, "video_id": int(r.video_id), "window": w["window"], "start": w["start"],
+                       "end": w["end"], "n_frames": len(frames), "n_words": w["n_words"]}
                 if a.trace:
-                    rows0, _ = parse_trace(text)
-                    if not rows0:
+                    rows, bad = parse_trace(text)
+                    if not rows:
                         retried = True
                         text = runner.generate(prompt + TRACE_RETRY_SUFFIX, frames, wdir / "clip.mp4", use_audio=a.use_audio)
-                        rows0, _ = parse_trace(text)
-                    counts = counts_from_trace(rows0) if rows0 else None
+                        rows, bad = parse_trace(text)
+                    n_calls += 1; n_fail += not rows
+                    rec.update(retried=retried, raw=text, trace=rows, trace_bad_lines=bad)
                 else:
                     counts = parse_counts(text)
                     if counts is None:
                         retried = True
                         text = runner.generate(prompt + RETRY_SUFFIX, frames, wdir / "clip.mp4", use_audio=a.use_audio)
                         counts = parse_counts(text)
-                n_calls += 1; n_fail += counts is None; vid_counts.append(counts)
-                rec = {"CID": r.CID, "video_id": int(r.video_id), "window": w["window"], "start": w["start"],
-                       "end": w["end"], "n_frames": len(frames), "n_words": w["n_words"], "retried": retried,
-                       "raw": text, "counts": counts}
-                if a.trace:
-                    rows, bad = parse_trace(text); rec["trace"] = rows; rec["trace_bad_lines"] = bad
+                    n_calls += 1; n_fail += counts is None; vid_counts.append(counts)
+                    rec.update(retried=retried, raw=text, counts=counts)
                 raw.write(json.dumps(rec, ensure_ascii=False) + "\n"); raw.flush()
-            vid_total = {c: sum(d[c] for d in vid_counts if isinstance(d, dict)) for c in CODES}
-            gold = {c: int(getattr(r, c)) for c in CODES}
             print(f"[{vi}/{len(m)}] {r.CID}/video_{r.video_id}: {len(windows)} windows, {time.time()-t0:.0f}s "
                   f"(cumulative parse failures {n_fail}/{n_calls})", flush=True)
-            print(f"    pred {json.dumps(vid_total)}", flush=True)
-            print(f"    gold {json.dumps(gold)}", flush=True)
+            if not a.trace:
+                vid_total = {c: sum(d[c] for d in vid_counts if isinstance(d, dict)) for c in CODES}
+                gold = {c: int(getattr(r, c)) for c in CODES}
+                print(f"    pred {json.dumps(vid_total)}", flush=True)
+                print(f"    gold {json.dumps(gold)}", flush=True)
 
     rows = [json.loads(l) for l in raw_path.read_text(encoding="utf-8").splitlines() if l.strip()]
+    if a.trace:
+        turns = [dict(CID=x["CID"], video_id=x["video_id"], window=x["window"], turn=t["turn"], text=t["text"], **t["conf"])
+                 for x in rows for t in x.get("trace", [])]
+        pd.DataFrame(turns).to_csv(run_dir / "traces.csv", index=False)
+        print(f"\ntraces.csv: {len(turns)} turns from {len(rows)} windows")
+        config["finished"] = time.strftime("%Y-%m-%d %H:%M:%S")
+        (run_dir / "config.json").write_text(json.dumps(config, indent=1))
+        return
     wdf = pd.DataFrame(rows)
     for c in CODES:
         wdf[f"pred_{c}"] = wdf["counts"].apply(lambda d: d[c] if isinstance(d, dict) else None)

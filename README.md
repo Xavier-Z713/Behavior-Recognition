@@ -87,7 +87,8 @@ runs/<model>__<zero|few>[__audio][__trace]/
 
 | File | Content |
 |---|---|
-| `raw_outputs.jsonl` | Raw model outputs and parsed window-level predictions |
+| `raw_outputs.jsonl` | Raw model outputs and parsed window-level predictions (trace mode: the parsed turns) |
+| `traces.csv` | Trace mode only: one row per speaker turn with its text and the confidence for every code |
 | `predictions.csv` | Video-level gold and predicted behavior counts |
 | `per_code_metrics.csv` | Per-code MAE, RMSE, Pearson *r*, Spearman *ρ*, and two-sided *p*-values |
 | `pooled_metrics.csv` | Pooled metrics and trivial baselines |

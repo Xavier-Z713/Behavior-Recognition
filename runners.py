@@ -235,17 +235,9 @@ def parse_trace(text: str):
                 conf[c] = min(1.0, max(0.0, float(obj.get(c, 0) or 0)))
             except (TypeError, ValueError):
                 conf[c] = 0.0
-        top = max(PROMPT_CODES, key=lambda c: (conf[c], -PROMPT_CODES.index(c)))
         try:
             turn = int(obj.get("turn", len(rows) + 1))
         except (TypeError, ValueError):
             turn = len(rows) + 1
-        rows.append(dict(turn=turn, text=str(obj.get("text", "")), conf=conf, argmax=top))
+        rows.append(dict(turn=turn, text=str(obj.get("text", "")), conf=conf))
     return rows, bad
-
-
-def counts_from_trace(rows):
-    counts = {c: 0 for c in PROMPT_CODES}
-    for r in rows:
-        counts[r["argmax"]] += 1
-    return counts
